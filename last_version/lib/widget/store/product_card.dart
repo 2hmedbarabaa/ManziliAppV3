@@ -62,37 +62,41 @@ class _ProductCardState extends State<ProductCard> {
       final userId = Get.find<UserController>().userId.value;
       bool success = false;
 
-      if (wantToAdd) {
-        // ----- ADD TO CART -----
-        final url = Uri.parse(
-          'http://man.runasp.net/api/Cart/add'
-          '?userId=$userId&storeId=${widget.storeId}'
-          '&productId=$productId&quantity=1',
-        );
-        final resp = await http.post(url);
-        success = resp.statusCode == 200 && json.decode(resp.body) == true;
+      if (userId == widget.storeId) {
+        Get.snackbar('خطأ', 'لا يمكنك إضافة منتجاتك للسلة');
       } else {
-        // ----- REMOVE FROM CART -----
-        debugPrint('Removing from cart...');
-        final url = Uri.parse(
-          'http://man.runasp.net/api/Cart/DeleteCartItemFromStore?storeId=${widget.storeId}&userId=$userId&productId=$productId',
-        );
-        final resp = await http.delete(url);
-        if (resp.statusCode == 200) {
-          final body = json.decode(resp.body);
-          if (body['isSuccess'] == true) {
-            // clear exactly the same prefs as in CartCardWidget
-            await _clearProductPrefs();
-            success = true;
+        if (wantToAdd) {
+          // ----- ADD TO CART -----
+          final url = Uri.parse(
+            'http://man.runasp.net/api/Cart/add'
+            '?userId=$userId&storeId=${widget.storeId}'
+            '&productId=$productId&quantity=1',
+          );
+          final resp = await http.post(url);
+          success = resp.statusCode == 200 && json.decode(resp.body) == true;
+        } else {
+          // ----- REMOVE FROM CART -----
+          debugPrint('Removing from cart...');
+          final url = Uri.parse(
+            'http://man.runasp.net/api/Cart/DeleteCartItemFromStore?storeId=${widget.storeId}&userId=$userId&productId=$productId',
+          );
+          final resp = await http.delete(url);
+          if (resp.statusCode == 200) {
+            final body = json.decode(resp.body);
+            if (body['isSuccess'] == true) {
+              // clear exactly the same prefs as in CartCardWidget
+              await _clearProductPrefs();
+              success = true;
+            }
           }
         }
-      }
 
-      if (success) {
-        // persist & update UI
-        setState(() => _isInCart = wantToAdd);
-        if (wantToAdd) {
-          await _saveCartState(true);
+        if (success) {
+          // persist & update UI
+          setState(() => _isInCart = wantToAdd);
+          if (wantToAdd) {
+            await _saveCartState(true);
+          }
         }
       }
     } catch (e) {
