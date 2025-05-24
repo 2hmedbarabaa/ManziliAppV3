@@ -138,7 +138,15 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
                                         .map((status) =>
                                             DropdownMenuItem<String>(
                                               value: status,
-                                              child: Text(status),
+                                              child: Text(
+                                                status,
+                                                style: TextStyle(
+                                                  color: status == 'مفتوح'
+                                                      ? Colors.green
+                                                      : Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
                                             ))
                                         .toList(),
                                     onChanged: (value) async {
@@ -171,8 +179,10 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
                                         );
                                       }
                                     },
-                                    style: const TextStyle(
-                                      color: Colors.blue,
+                                    style: TextStyle(
+                                      color: storeStatus == 'مفتوح'
+                                          ? Colors.green
+                                          : Colors.red,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
