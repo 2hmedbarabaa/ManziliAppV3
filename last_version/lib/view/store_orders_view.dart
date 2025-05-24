@@ -6,6 +6,7 @@ import '../model/mock_data.dart';
 import '../widget/store_order/order_card.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import 'confirm_cancel_order_screen.dart';
 
 class StoreOrdersView extends StatefulWidget {
   const StoreOrdersView({super.key});
@@ -173,44 +174,40 @@ class _OrdersScreenState extends State<StoreOrdersView>
             }
           },
           onCancel: () async {
-            final confirm = await showDialog<bool>(
-              context: context,
-              builder: (ctx) => AlertDialog(
-                title: const Text('تأكيد الإلغاء'),
-                content: const Text('هل أنت متأكد أنك تريد إلغاء هذا الطلب؟'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(false),
-                    child: const Text('لا'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(true),
-                    child: const Text('نعم'),
-                  ),
-                ],
+            // Navigate to the new confirmation screen instead of deleting directly
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (ctx) => ConfirmCancelOrderScreen(
+                  customerName: order.customerName,
+                  storeName: order.storeName ?? '', // Replace with actual store name if available in order
+                  onConfirm: () async {
+                    Navigator.of(ctx).pop(); // Close confirmation screen
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (ctx) => const Center(child: CircularProgressIndicator()),
+                    );
+                    final success = await _deleteOrder(orders[index].id);
+                    Navigator.of(context).pop(); // remove loading dialog
+                    if (success) {
+                      setState(() {
+                        orders.removeAt(index);
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('تم إلغاء الطلب ${orders[index].id}')),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('فشل في إلغاء الطلب')),
+                      );
+                    }
+                  },
+                  onBack: () {
+                    Navigator.of(ctx).pop();
+                  },
+                ),
               ),
             );
-            if (confirm != true) return;
-
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (ctx) => const Center(child: CircularProgressIndicator()),
-            );
-            final success = await _deleteOrder(orders[index].id);
-            Navigator.of(context).pop(); // remove loading dialog
-            if (success) {
-              setState(() {
-                orders.removeAt(index);
-              });
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('تم إلغاء الطلب ${orders[index].id}')),
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('فشل في إلغاء الطلب')),
-              );
-            }
           },
           onDetails: () {
             // Handle show details action

@@ -13,6 +13,8 @@ class Order {
   final DateTime date;
   final String notes;
   final String? documentUrl; 
+  final String? storeName; 
+
   
 
   Order({
@@ -26,6 +28,7 @@ class Order {
     required this.status,
     required this.date,
     required this.notes,
+    this.storeName,
     this.documentUrl, 
   });
 

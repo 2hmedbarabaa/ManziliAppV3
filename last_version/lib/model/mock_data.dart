@@ -20,6 +20,7 @@ class MockData {
           customerPhone: jsonOrder['customerPhoneNumber'],
           id: jsonOrder['id'].toString(),
           customerName: jsonOrder['customerName'] ?? '',
+          storeName: jsonOrder['storeName'] ?? '', // Assuming storeName is available
           customerAvatar: '', // No avatar in API
           customerEmail: jsonOrder['customerEmail'] ?? '',
           customerAddress: jsonOrder['customerAddress'] ?? '',
