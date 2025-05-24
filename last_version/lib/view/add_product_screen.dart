@@ -90,6 +90,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(body['message'] ?? 'تم حفظ المنتج بنجاح')),
           );
+           Navigator.of(context).pop();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(body['message'] ?? 'حدث خطأ أثناء حفظ المنتج')),
