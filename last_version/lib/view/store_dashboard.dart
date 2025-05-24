@@ -616,12 +616,24 @@ class _StoreDashboardState extends State<StoreDashboard> {
         borderRadius: BorderRadius.circular(12),
         child: Stack(
           children: [
-            // Product image
+            // Product image with error handling
             Image.asset(
               product.imageUrl,
               fit: BoxFit.cover,
               height: double.infinity,
               width: double.infinity,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: Colors.grey[300],
+                  child: const Center(
+                    child: Icon(
+                      Icons.image_not_supported,
+                      color: Colors.grey,
+                      size: 48,
+                    ),
+                  ),
+                );
+              },
             ),
 
             // Gradient overlay for better text visibility
@@ -643,64 +655,70 @@ class _StoreDashboardState extends State<StoreDashboard> {
               ),
             ),
 
-            // Product name
+            // Product name (move up a bit)
             Positioned(
-              bottom: 40,
+              bottom: 50, // was 40, now higher
               right: 12,
+              left: 12,
               child: Text(
                 product.name,
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 24,
+                  fontSize: 18,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black54,
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.right,
               ),
             ),
 
-            // Rating and price
+            // Rating (bottom left)
             Positioned(
               bottom: 8,
               left: 12,
-              right: 12,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Rating
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment
-                        .center, // تأكد من أن العناصر تصطف بشكل جيد
-                    children: [
-                      Transform.translate(
-                        offset: const Offset(
-                            0, -3), // رفع النجمة للأعلى بمقدار 3 بكسل
-                        child: const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                          size: 24, // يمكنك زيادته إذا أردت
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        product.rating.toString(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22, // تكبير الرقم ليكون أوضح
-                        ),
-                      ),
-                    ],
+                  Transform.translate(
+                    offset: const Offset(0, -3),
+                    child: const Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                      size: 18,
+                    ),
                   ),
-
-                  // Price
+                  const SizedBox(width: 4),
                   Text(
-                    '${product.price} ريال',
+                    product.rating.toString(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 23,
+                      fontSize: 22,
                     ),
                   ),
                 ],
+              ),
+            ),
+
+            // Price (bottom right)
+            Positioned(
+              bottom: 8,
+              right: 12,
+              child: Text(
+                '${product.price} ريال',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
             ),
           ],

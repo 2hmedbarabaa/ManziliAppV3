@@ -109,168 +109,180 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text(
-          'إضافة منتج جديد',
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {_saveProduct;},
-            child: const Text(
-              'إعادة تعيين',
-              style: TextStyle(color: Color(0xFF1548C7)),
-            ),
+    return Directionality(
+      textDirection: TextDirection.rtl, // Force RTL for the whole page
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+            onPressed: () => Navigator.of(context).pop(),
           ),
-        ],
-      ),
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'اسم المنتج',
-                style: TextStyle(fontWeight: FontWeight.bold),
+          title: const Text(
+            'إضافة منتج جديد',
+            style: TextStyle(color: Colors.black),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {_saveProduct;},
+              child: const Text(
+                'إعادة تعيين',
+                style: TextStyle(color: Color(0xFF1548C7)),
               ),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  hintText: 'برجر لحم',
+            ),
+          ],
+        ),
+        body: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'اسم المنتج',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'الرجاء إدخال اسم المنتج';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'قم بتحميل صورة المنتج',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  ImagePickerWidget(
-                    isMainImage: true,
-                    onImageSelected: (image) {
-                      if (image != null && _selectedImages.isEmpty) {
-                        setState(() {
-                          _selectedImages.add(image);
-                        });
-                      }
-                    },
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    hintText: 'برجر لحم',
                   ),
-                  const SizedBox(width: 12),
-                  ImagePickerWidget(
-                    onImageSelected: (image) {
-                      if (image != null && _selectedImages.length < 3) {
-                        setState(() {
-                          _selectedImages.add(image);
-                        });
-                      }
-                    },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'الرجاء إدخال اسم المنتج';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'قم بتحميل صورة المنتج',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    ImagePickerWidget(
+                      isMainImage: true,
+                      onImageSelected: (image) {
+                        if (image != null && _selectedImages.isEmpty) {
+                          setState(() {
+                            _selectedImages.add(image);
+                          });
+                        }
+                      },
+                    ),
+                    const SizedBox(width: 12),
+                    ImagePickerWidget(
+                      onImageSelected: (image) {
+                        if (image != null && _selectedImages.length < 3) {
+                          setState(() {
+                            _selectedImages.add(image);
+                          });
+                        }
+                      },
+                    ),
+                    const SizedBox(width: 12),
+                    ImagePickerWidget(
+                      onImageSelected: (image) {
+                        if (image != null && _selectedImages.length < 3) {
+                          setState(() {
+                            _selectedImages.add(image);
+                          });
+                        }
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Prepare images before uploading. Upload images larger than 750px × 450px. Max number of images is 5. Max image size is 134MB.',
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'التصنيف',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                CategoryDropdown(
+                  categories: _categories,
+                  selectedCategory: _selectedCategory,
+                  onCategorySelected: (category) {
+                    setState(() {
+                      _selectedCategory = category;
+                    });
+                  },
+                  onAddNewCategory: _showAddCategoryDialog,
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'السعر',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _priceController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    hintText: '50',
+                    suffixText: '\$',
                   ),
-                  const SizedBox(width: 12),
-                  ImagePickerWidget(
-                    onImageSelected: (image) {
-                      if (image != null && _selectedImages.length < 3) {
-                        setState(() {
-                          _selectedImages.add(image);
-                        });
-                      }
-                    },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'الرجاء إدخال السعر';
+                    }
+                    if (double.tryParse(value) == null) {
+                      return 'الرجاء إدخال رقم صحيح';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'تفاصيل المنتج',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _descriptionController,
+                  maxLines: 4,
+                  decoration: const InputDecoration(
+                    hintText:
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum in vel, mattis mauris turpis.',
                   ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Prepare images before uploading. Upload images larger than 750px × 450px. Max number of images is 5. Max image size is 134MB.',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'التصنيف',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              CategoryDropdown(
-                categories: _categories,
-                selectedCategory: _selectedCategory,
-                onCategorySelected: (category) {
-                  setState(() {
-                    _selectedCategory = category;
-                  });
-                },
-                onAddNewCategory: _showAddCategoryDialog,
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'السعر',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _priceController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  hintText: '50',
-                  suffixText: '\$',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'الرجاء إدخال تفاصيل المنتج';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'الرجاء إدخال السعر';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'الرجاء إدخال رقم صحيح';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'تفاصيل المنتج',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _descriptionController,
-                maxLines: 4,
-                decoration: const InputDecoration(
-                  hintText:
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum in vel, mattis mauris turpis.',
+                const SizedBox(height: 24),
+                Center(
+                  child: SizedBox(
+                    width: double.infinity, // Make the button take full width
+                    child: ElevatedButton(
+                      onPressed: _saveProduct,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF1548C7), // Button background color
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 12), // Optional padding
+                        textStyle: const TextStyle(fontSize: 18), // Text size
+                        foregroundColor: Colors.white, // Make font color white
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6), // Reduced border radius
+                        ),
+                      ),
+                      child: const Text('حفظ التغييرات'),
+                    ),
+                  ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'الرجاء إدخال تفاصيل المنتج';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _saveProduct,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF1548C7), // Button background color
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 24, vertical: 12), // Optional padding
-                  textStyle: const TextStyle(fontSize: 18), // Text size
-                ),
-                child: const Text('حفظ التغييرات'),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
