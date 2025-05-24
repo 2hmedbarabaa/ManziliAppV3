@@ -19,13 +19,12 @@ class ConfirmCancelOrderScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ConfirmCancelOrderScreen> createState() => _ConfirmCancelOrderScreenState();
+  State<ConfirmCancelOrderScreen> createState() =>
+      _ConfirmCancelOrderScreenState();
 }
 
-class _ConfirmCancelOrderScreenState extends State<ConfirmCancelOrderScreen> { 
-   String? uploadedPdfPath;
-
-   
+class _ConfirmCancelOrderScreenState extends State<ConfirmCancelOrderScreen> {
+  String? uploadedPdfPath;
 
   void _onPdfUploaded(String pdfPath) {
     setState(() => uploadedPdfPath = pdfPath);
@@ -48,23 +47,21 @@ class _ConfirmCancelOrderScreenState extends State<ConfirmCancelOrderScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-
-
             Text('اسم العميل: ${widget.customerName}',
                 style: const TextStyle(fontSize: 20)),
             const SizedBox(height: 16),
             Text('اسم المتجر: ${widget.storeName}',
                 style: const TextStyle(fontSize: 20)),
             const SizedBox(height: 32),
- PaymentReceipt(onPdfUploaded: _onPdfUploaded),
-
+            PaymentReceipt(onPdfUploaded: _onPdfUploaded),
             ElevatedButton(
               onPressed: () async {
                 final confirm = await showDialog<bool>(
                   context: context,
                   builder: (ctx) => AlertDialog(
                     title: const Text('تأكيد الإلغاء'),
-                    content: const Text('هل أنت متأكد أنك تريد إلغاء هذا الطلب؟'),
+                    content:
+                        const Text('هل أنت متأكد أنك تريد إلغاء هذا الطلب؟'),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(ctx).pop(false),
@@ -81,15 +78,17 @@ class _ConfirmCancelOrderScreenState extends State<ConfirmCancelOrderScreen> {
                   // 1. Call the ReturnOrder API with PDF upload
                   if (uploadedPdfPath == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('يرجى رفع إيصال الدفع أولاً')),
+                      const SnackBar(
+                          content: Text('يرجى رفع إيصال الدفع أولاً')),
                     );
                     return;
                   }
-                  final uri = Uri.parse('http://man.runasp.net/api/ReturnOrder/CreateReturnOrder?UserName=${Uri.encodeComponent(widget.customerName)}&StoreName=${Uri.encodeComponent(widget.storeName)}');
+                  final uri = Uri.parse(
+                      'http://man.runasp.net/api/ReturnOrder/CreateReturnOrder?UserName=${widget.customerName}&StoreName=${widget.storeName}');
                   final request = http.MultipartRequest('POST', uri);
                   request.files.add(
                     await http.MultipartFile.fromPath(
-                      'PdfFile',
+                      'pdf',
                       uploadedPdfPath!,
                       contentType: MediaType('application', 'pdf'),
                     ),
@@ -97,11 +96,13 @@ class _ConfirmCancelOrderScreenState extends State<ConfirmCancelOrderScreen> {
                   showDialog(
                     context: context,
                     barrierDismissible: false,
-                    builder: (ctx) => const Center(child: CircularProgressIndicator()),
+                    builder: (ctx) =>
+                        const Center(child: CircularProgressIndicator()),
                   );
                   try {
                     final streamedResponse = await request.send();
-                    final response = await http.Response.fromStream(streamedResponse);
+                    final response =
+                        await http.Response.fromStream(streamedResponse);
                     Navigator.of(context).pop(); // remove loading dialog
                     if (response.statusCode == 200) {
                       final data = jsonDecode(response.body);
@@ -110,12 +111,16 @@ class _ConfirmCancelOrderScreenState extends State<ConfirmCancelOrderScreen> {
                         widget.onConfirm();
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(data['message'] ?? 'فشل في إرجاع الطلب')),
+                          SnackBar(
+                              content: Text(
+                                  data['message'] ?? 'فشل في إرجاع الطلب')),
                         );
                       }
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('فشل في إرجاع الطلب: ${response.statusCode}')),
+                        SnackBar(
+                            content: Text(
+                                'فشل في إرجاع الطلب: ${response.statusCode}')),
                       );
                     }
                   } catch (e) {
@@ -134,5 +139,3 @@ class _ConfirmCancelOrderScreenState extends State<ConfirmCancelOrderScreen> {
     );
   }
 }
-
-
