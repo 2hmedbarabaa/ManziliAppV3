@@ -93,8 +93,12 @@ class _ProductSroreDashbordViewState extends State<ProductSroreDashbordView>
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Color(0xFF1548C7),
                         padding: EdgeInsets.symmetric(horizontal: 20),
+                        foregroundColor: Colors.white, // Set text color to white
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6), // Reduced border radius
+                        ),
                       ),
                       child: Text('إضافة منتج'),
                     ),
@@ -162,13 +166,17 @@ class _ProductItemState extends State<ProductItem> {
       margin: EdgeInsets.only(bottom: 16),
       child: ListTile(
         contentPadding: EdgeInsets.all(8),
-        leading: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Image.network(
-            widget.imageUrl,
-            width: 70,
-            height: 70,
-            fit: BoxFit.fill,
+        leading: SizedBox(
+          width: 90,
+          height: 150, // Further increase height for a taller image
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(
+              widget.imageUrl,
+              width: 90,
+              height: 150,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         title: Row(
@@ -214,7 +222,7 @@ class _ProductItemState extends State<ProductItem> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('ريال ${widget.price}', style: TextStyle(color: Colors.blue)),
+            // Remove the price from here and add it below in a Row
             GestureDetector(
               onTap: () {
                 setState(() {
@@ -227,16 +235,19 @@ class _ProductItemState extends State<ProductItem> {
                     : (widget.description.length > 50
                         ? '${widget.description.substring(0, 50)}...'
                         : widget.description),
-                style: TextStyle(fontSize: 12),
+                style: TextStyle(fontSize: 12 ,fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(height: 8),
             Row(
               children: [
-                Icon(Icons.star, size: 16, color: Colors.blue),
-                Text('${widget.rate}', style: TextStyle(fontSize: 12)),
+                Icon(Icons.star, size: 17, color: Color(0xff1548C7)),
+                Text('${widget.rate}', style: TextStyle(fontSize: 17)),
                 SizedBox(width: 4),
-                Text('(10 مراجعات)', style: TextStyle(fontSize: 12)),
+                Text('(10 مراجعات)', style: TextStyle(fontSize: 17)),
+                Spacer(),
+                // Price at the bottom left (swap number and ريال)
+                Text('${widget.price} ريال', style: TextStyle(color: Color(0xff1548C7), fontSize: 18 ,fontWeight: FontWeight.bold)),
               ],
             ),
           ],

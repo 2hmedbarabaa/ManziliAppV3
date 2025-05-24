@@ -128,6 +128,7 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16),
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center, // Center the row
                                 children: [
                                   const Text("حالة المتجر: "),
                                   DropdownButton<String>(
@@ -172,7 +173,7 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
                                       }
                                     },
                                     style: const TextStyle(
-                                      color: Colors.blue,
+                                      color: Color(0xff1548C7),
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
