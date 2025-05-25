@@ -15,8 +15,9 @@ import 'package:provider/provider.dart';
 class StoreListSection extends StatefulWidget {
   final int? category;
   final String? filter;
+  final String? searchQuery;
 
-  const StoreListSection({super.key, this.category, this.filter});
+  const StoreListSection({super.key, this.category, this.filter, this.searchQuery});
 
   @override
   _StoreListSectionState createState() => _StoreListSectionState();
@@ -103,7 +104,11 @@ class _StoreListSectionState extends State<StoreListSection> {
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(child: Text("No stores available."));
         } else {
-          final stores = snapshot.data!;
+          List<StoreModle> stores = snapshot.data!;
+          if (widget.searchQuery != null && widget.searchQuery!.isNotEmpty) {
+            final query = widget.searchQuery!.toLowerCase();
+            stores = stores.where((store) => store.UserName.toLowerCase().contains(query)).toList();
+          }
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
             child: Column(
@@ -128,8 +133,8 @@ class _StoreListSectionState extends State<StoreListSection> {
           );
         }
       },
-    );
-  }
+      );
+    }
 }
 
 class StoreListItem extends StatefulWidget {

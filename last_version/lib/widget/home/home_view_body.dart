@@ -79,6 +79,24 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   int? selectedCategory;
   String? selectedFilter;
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(() {
+      setState(() {
+        _searchQuery = _searchController.text.trim();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,11 +125,12 @@ class _StartPageState extends State<StartPage> {
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: TextFileldSearch(searchController: SearchController()),
+              child: TextFileldSearch(searchController: _searchController),
             ),
             StoreListSection(
               category: selectedCategory,
               filter: selectedFilter,
+              searchQuery: _searchQuery,
             ),
           ],
         ),
