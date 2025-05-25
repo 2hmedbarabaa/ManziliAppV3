@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:manziliapp/core/globals/globals.dart';
+import 'package:manziliapp/view/home_store_view.dart';
 import 'package:manziliapp/view/order_placed_view.dart';
 import 'package:manziliapp/widget/card/payment_receipt_widget.dart';
 import 'package:manziliapp/widget/card/shipment_address_widget.dart';
@@ -108,11 +110,21 @@ class _CheckoutViewState extends State<CheckoutView> {
           // Call API to delete the cart
           await _deleteCart();
 
-          Navigator.pushAndRemoveUntil(
+          if (userType == 'customer') {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => OrderPlacedView()),
+              (route) => false,
+            );
+          }
+
+          else{
+             Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => OrderPlacedView()),
+            MaterialPageRoute(builder: (context) => HomeStoreView()),
             (route) => false,
           );
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

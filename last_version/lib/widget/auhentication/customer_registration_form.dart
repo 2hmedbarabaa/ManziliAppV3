@@ -9,6 +9,7 @@ import 'package:manziliapp/core/widget/custom_text_bottun.dart';
 import 'package:manziliapp/core/widget/custome_text_filed.dart';
 import 'package:manziliapp/model/user_create_model.dart';
 import 'package:manziliapp/view/home_view.dart';
+import 'package:manziliapp/view/login_view.dart';
 import 'package:manziliapp/widget/auhentication/custom_password_text.dart';
 import 'package:manziliapp/widget/auhentication/email_text_filed.dart';
 import 'package:manziliapp/widget/auhentication/terms_and_privacy_checbok.dart';
@@ -112,8 +113,8 @@ class _CustomerRegistrationFormState extends State<CustomerRegistrationForm> {
           authController.isLoading.value
               ? const CircularProgressIndicator()
               : CustomTextButton(
-                  onPressed: () {
-                    _validateForm2();
+                  onPressed: () async {
+                    await _validateForm2();
                   },
                   name: 'تسجيل الدخول',
                   fontColor: Colors.white,
@@ -184,16 +185,40 @@ class _CustomerRegistrationFormState extends State<CustomerRegistrationForm> {
   }
 
   Future<void> _validateForm2() async {
-    if (widget.formKey.currentState!.validate()) {
+    if (!widget.formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('تعل السبت يقولك خالد'),
+        ),
+      );
+      return;
+    }
+
+    if (!widget.isAgreed) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('يجب الموافقة على الشروط وسياسة الخصوصية'),
+        ),
+      );
+      return;
+    }
+
+    // Show loading indicator
+    authController.isLoading.value = true;
+
+    try {
       await authController.registerUser(userCreateModel);
-      try {
-        final id = authController.apiResponseData['id'] as int;
-        final token = authController.apiResponseData['token'] as String;
-        await userController.saveUserData(id, token);
-        Get.offAll(() => HomeView());
-      } catch (e) {
-        print("Error saving user data: $e");
-      }
+
+      // Navigate to LoginView after successful registration
+      Get.offAll(() => LoginView());
+    } catch (e) {
+      // Handle errors and show a message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('حدث خطأ أثناء التسجيل: $e')),
+      );
+    } finally {
+      // Hide loading indicator
+      authController.isLoading.value = false;
     }
   }
 }

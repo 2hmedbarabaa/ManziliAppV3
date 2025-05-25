@@ -5,6 +5,7 @@ import 'package:manziliapp/controller/auth_controller.dart';
 import 'package:manziliapp/model/store_create_model.dart';
 import 'package:manziliapp/core/constant/constant.dart';
 import 'package:manziliapp/core/widget/custom_text_bottun.dart';
+import 'package:manziliapp/view/login_view.dart';
 import 'package:manziliapp/widget/auhentication/custom_indicator.dart';
 import 'package:manziliapp/widget/auhentication/custom_page_view.dart';
 import 'package:manziliapp/widget/auhentication/terms_and_privacy_checbok.dart';
@@ -45,8 +46,7 @@ class _ProducerRegistrationFormState extends State<ProducerRegistrationForm> {
   final TextEditingController socileMediaAcountController =
       TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-    final TextEditingController bookTime = TextEditingController();
-
+  final TextEditingController bookTime = TextEditingController();
 
   File? userImage;
   final AuthController authController = Get.find<AuthController>();
@@ -66,21 +66,37 @@ class _ProducerRegistrationFormState extends State<ProducerRegistrationForm> {
     super.dispose();
   }
 
-  void _submitForm() {
-    final storeData = StoreCreateModel(
-      userName: usernameController.text,
-      phonenumber: phoneController.text,
-      email: emailController.text,
-      address: addressController.text,
-      password: passwordController.text,
-      confirmPassword: confirmPasswordController.text,
-      bankAccount: bankAccountController.text,
-      description: descriptionController.text,
-      image: userImage,
-      socileMediaAcount: socileMediaAcountController.text,
-    );
+  Future<void> _submitForm() async {
+    // Show loading indicator
+    authController.isLoading.value = true;
 
-    authController.registerStore(storeData);
+    try {
+      final storeData = StoreCreateModel(
+        userName: usernameController.text,
+        phonenumber: phoneController.text,
+        email: emailController.text,
+        address: addressController.text,
+        password: passwordController.text,
+        confirmPassword: confirmPasswordController.text,
+        bankAccount: bankAccountController.text,
+        description: descriptionController.text,
+        image: userImage,
+        socileMediaAcount: socileMediaAcountController.text,
+      );
+
+      await authController.registerStore(storeData);
+
+      // Navigate to LoginView after successful registration
+      Get.offAll(() => LoginView());
+    } catch (e) {
+      // Handle errors and show a message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('حدث خطأ أثناء التسجيل: $e')),
+      );
+    } finally {
+      // Hide loading indicator
+      authController.isLoading.value = false;
+    }
   }
 
   @override
@@ -115,11 +131,12 @@ class _ProducerRegistrationFormState extends State<ProducerRegistrationForm> {
             return const CircularProgressIndicator();
           }
           return CustomTextButton(
-            onPressed: () {
+            onPressed: () async {
               if (widget.formKey.currentState!.validate()) {
                 if (widget.isAgreed) {
                   if (widget.currentIndex == 1) {
-                    _submitForm();
+                    await _submitForm();
+                    Get.offAll(LoginView());
                   } else {
                     widget.pageController.nextPage(
                       duration: const Duration(milliseconds: 300),

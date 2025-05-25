@@ -5,6 +5,7 @@ import 'package:manziliapp/controller/user_controller.dart';
 import 'package:manziliapp/core/constant/constant.dart';
 import 'package:manziliapp/core/globals/globals.dart';
 import 'package:manziliapp/core/widget/custom_text_bottun.dart';
+import 'package:manziliapp/main.dart';
 import 'package:manziliapp/model/login_model.dart';
 import 'package:manziliapp/view/home_store_view.dart';
 import 'package:manziliapp/view/home_view.dart';
@@ -14,6 +15,11 @@ import 'package:manziliapp/widget/auhentication/forgot_password_text.dart';
 import 'package:manziliapp/widget/auhentication/header_image.dart';
 import 'package:manziliapp/widget/auhentication/register_text.dart';
 import 'package:manziliapp/widget/auhentication/welcome_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+
+
+   
 
 class LoginViewBody extends StatefulWidget {
   const LoginViewBody({super.key});
@@ -99,8 +105,11 @@ class _LoginViewBodyState extends State<LoginViewBody> {
           await userController.saveUserData(id, token);
 
           if(userType == 'customer') {
+
+            sharedPreferences!.setString('userType', 'customer');
             Get.offAll(() => HomeView());
           } else {
+            sharedPreferences!.setString('userType', 'producer');
             Get.offAll(() => HomeStoreView());
           }
          

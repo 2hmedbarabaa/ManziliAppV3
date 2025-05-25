@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:manziliapp/core/globals/globals.dart';
+import 'package:manziliapp/main.dart';
 import 'package:manziliapp/widget/auhentication/customer_registration_form.dart';
+import 'package:manziliapp/widget/auhentication/login_view_body.dart';
 import 'package:manziliapp/widget/auhentication/producer_registration_form.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterViewBody extends StatefulWidget {
   const RegisterViewBody({super.key});
@@ -38,7 +41,9 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
               CustomerRegistrationForm(
                 formKey: _formKey,
                 isAgreed: isAgreed,
-                onAgreementChanged: (value) {
+                onAgreementChanged: (value) async {
+                  
+                  await sharedPreferences!.setString('userType', 'customer');
                   setState(() {
                     isAgreed = value;
                   });
@@ -49,7 +54,8 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                 pageController: _pageController,
                 formKey: _formKey,
                 isAgreed: isAgreed,
-                onAgreementChanged: (value) {
+                onAgreementChanged: (value) async {
+                  await sharedPreferences!.setString('userType', 'producer');
                   setState(() {
                     isAgreed = value;
                   });

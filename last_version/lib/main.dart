@@ -23,44 +23,31 @@ import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 SharedPreferences? sharedPreferences;
-
+//SharedPreferences? prefs2;
 //final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 // FlutterLocalNotificationsPlugin();
 
 Future<void> main() async {
-  // 1. تأكد من تهيئة الـ Binding قبل أي استدعاء async
+  // Ensure Flutter bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 2. تهيئة إشعارات النظام
-  //await _initLocalNotifications();
+  // Initialize sharedPreferences
+  sharedPreferences = await SharedPreferences.getInstance();
 
-  // 3. سجل الـ UserController أولاً وحمّل بيانات المستخدم
+  // Register controllers
   Get.put(UserController());
   await Get.find<UserController>().loadUserData();
 
-  // 4. استخرج معرّف المستخدم (أو المتجر) بعد التحميل
-  final userId = Get.find<UserController>().userId.value;
-
-  // 5. سجل باقي الـ Controllers
   Get.put(AuthController());
   Get.put(CategoryController());
 
-  // 6. ابدأ خدمة الـ SignalR للإشعارات
-  //final notificationService = NotificationService();
-  //await notificationService.init(userId);
-
-  // 7. شغّل التطبيق
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => FavoriteProvider()),
-        ChangeNotifierProvider(
-            create: (_) =>
-                StoreProvider()), // Commented out as UserProvider is undefined
+        ChangeNotifierProvider(create: (_) => StoreProvider()),
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
-        ChangeNotifierProvider(
-            create: (_) =>
-                UserProvider()), // Commented out as UserProvider is undefined
+        ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: const MyApp(),
     ),
@@ -96,15 +83,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/login',
+      initialRoute: '/sp',
       getPages: [
         GetPage(
           name: '/sp',
           page: () => const SplashsView(),
-        //  middlewares: [AuthMiddleware()],
+          middlewares: [AuthMiddleware()],
         ),
         GetPage(
           name: '/login',
+          page: () => const LoginView(),
+        ),
+        GetPage(
+          name: '/homestore',
           page: () => const HomeStoreView(),
         ),
         GetPage(
