@@ -83,12 +83,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/sp',
+      initialRoute: '/homestore',
       getPages: [
         GetPage(
           name: '/sp',
           page: () => const SplashsView(),
-          middlewares: [AuthMiddleware()],
+       //   middlewares: [AuthMiddleware()],
         ),
         GetPage(
           name: '/login',

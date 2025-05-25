@@ -196,6 +196,9 @@ class _OrderViewState extends State<OrderView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.white,
+     
+      ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Directionality(

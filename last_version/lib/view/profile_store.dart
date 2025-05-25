@@ -10,6 +10,7 @@ import 'package:manziliapp/view/edit_profile_store.dart';
 import 'package:manziliapp/view/start_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:manziliapp/view/order_view.dart';
 
 class StoreProvider with ChangeNotifier {
   StoreModel _store = StoreModel.defaultStore();
@@ -257,7 +258,14 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
                                       ),
                                     );
                                   }),
-                                  _buildNavItem("إدارة الطلبات", () {}),
+                                  _buildNavItem("إدارة الطلبات", () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const OrderView(),
+                                      ),
+                                    );
+                                  }),
                                   _buildNavItem("المساعدة", () {}),
                                   _buildNavItem("الدعم الفني", () {}),
                                 ],
