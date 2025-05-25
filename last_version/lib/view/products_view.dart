@@ -81,6 +81,17 @@ class _ProductsViewState extends State<ProductsView> {
     }
   }
 
+  List<Product> _filteredProducts() {
+    final query = _searchController.text.trim().toLowerCase();
+    if (query.isEmpty) {
+      return _productController.products;
+    }
+    return _productController.products.where((product) {
+      return product.name.toLowerCase().contains(query) ||
+             product.description.toLowerCase().contains(query);
+    }).toList();
+  }
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -188,17 +199,45 @@ class _ProductsViewState extends State<ProductsView> {
             decoration: BoxDecoration(
               color: Colors.grey[200],
               borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            child: TextField(
-              controller: _searchController,
-              textAlign: TextAlign.right,
-              decoration: const InputDecoration(
-                hintText: 'بحث',
-                hintStyle: TextStyle(color: Colors.grey),
-                prefixIcon: Icon(Icons.search, color: Colors.grey),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.fromLTRB(0, 12, 25, 12),
-              ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _searchController,
+                    textAlign: TextAlign.right,
+                    decoration: const InputDecoration(
+                      hintText: 'بحث عن منتج...'
+                          ,
+                      hintStyle: TextStyle(color: Colors.grey),
+                      prefixIcon: Icon(Icons.search, color: Colors.grey),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.fromLTRB(0, 12, 25, 12),
+                    ),
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                    onSubmitted: (value) {
+                      setState(() {});
+                    },
+                  ),
+                ),
+                if (_searchController.text.isNotEmpty)
+                  IconButton(
+                    icon: const Icon(Icons.clear, color: Colors.grey),
+                    onPressed: () {
+                      _searchController.clear();
+                      setState(() {});
+                    },
+                  ),
+              ],
             ),
           ),
         ),
@@ -212,11 +251,12 @@ class _ProductsViewState extends State<ProductsView> {
             if (_productController.error.isNotEmpty) {
               return Center(child: Text(_productController.error.value));
             }
+            final filtered = _filteredProducts();
             return ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              itemCount: _productController.products.length,
+              itemCount: filtered.length,
               itemBuilder: (context, index) {
-                final product = _productController.products[index];
+                final product = filtered[index];
                 return InkWell(
                   onTap: () {
                     Get.to(() => ProductDetailView(
