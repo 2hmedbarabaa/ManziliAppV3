@@ -60,7 +60,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'الرئيسة',
+            label: 'الرئيسية',
           ),
         ],
       ),
