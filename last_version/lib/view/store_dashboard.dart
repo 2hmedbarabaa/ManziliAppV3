@@ -44,24 +44,25 @@ class _StoreDashboardState extends State<StoreDashboard> {
     'ديسمبر',
   ];
 
-  final Map<String, int> monthlyProfits = {
-    'يناير': 25000,
-    'فبراير': 28000,
-    'مارس': 30000,
-    'أبريل': 32000,
-    'مايو': 35000,
-    'يونيو': 38000,
-    'يوليو': 40000,
-    'أغسطس': 42000,
-    'سبتمبر': 45000,
-    'أكتوبر': 48000,
-    'نوفمبر': 50000,
-    'ديسمبر': 55000,
+  final Map<String, int> monthlyId = {
+    'يناير': 1,
+    'فبراير': 2,
+    'مارس': 3,
+    'أبريل': 4,
+    'مايو': 5,
+    'يونيو': 6,
+    'يوليو': 7,
+    'أغسطس': 8,
+    'سبتمبر': 9,
+    'أكتوبر': 10,
+    'نوفمبر': 11,
+    'ديسمبر': 12,
   };
 
   int numberOfOrders = 0;
   int totalSales = 0;
   int orderInProgress = 0;
+  int monthlyProfits = 0;
 
   List<Map<String, dynamic>> lastTwoOrders = []; // Store fetched orders
 
@@ -69,8 +70,10 @@ class _StoreDashboardState extends State<StoreDashboard> {
   void initState() {
     super.initState();
     _sheetController.addListener(_updateFabVisibility);
+    selectedMonth = 'يناير';
     _fetchAnalyticsData();
-    _fetchLastTwoCompletedOrders(); // Fetch last two orders
+    _fetchLastTwoCompletedOrders();
+    _fetchMonthlyProfits();
   }
 
   Future<void> _fetchAnalyticsData() async {
@@ -119,6 +122,26 @@ class _StoreDashboardState extends State<StoreDashboard> {
       }
     } catch (e) {
       print('Error fetching orders: $e');
+    }
+  }
+
+  Future<void> _fetchMonthlyProfits() async {
+    final int monthId = monthlyId[selectedMonth] ?? 1;
+    final String apiUrl = 'http://man.runasp.net/api/Store/GetTotalSales?storeId=1&month=$monthId';
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['isSuccess'] == true) {
+          setState(() {
+            monthlyProfits = data['data'] ?? 56;
+          });
+        }
+      }
+    } catch (e) {
+      setState(() {
+        monthlyProfits = 0;
+      });
     }
   }
 
@@ -376,7 +399,7 @@ class _StoreDashboardState extends State<StoreDashboard> {
 
               // Monthly profit amount
               Text(
-                '${monthlyProfits[selectedMonth]} ريال',
+                '${monthlyProfits} ريال',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -423,6 +446,7 @@ class _StoreDashboardState extends State<StoreDashboard> {
                           selectedMonth = month;
                         });
                         Navigator.pop(context);
+                        _fetchMonthlyProfits();
                       },
                     );
                   },
