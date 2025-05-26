@@ -17,10 +17,6 @@ import 'package:manziliapp/widget/auhentication/register_text.dart';
 import 'package:manziliapp/widget/auhentication/welcome_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
-   
-
 class LoginViewBody extends StatefulWidget {
   const LoginViewBody({super.key});
 
@@ -54,7 +50,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
               hintText: 'كلمة السر',
             ),
             const SizedBox(height: 10),
-            const ForgotPasswordText(),
+            // const ForgotPasswordText(),
             const SizedBox(height: 15),
             Obx(() {
               if (authController.isLoading.value) {
@@ -104,15 +100,13 @@ class _LoginViewBodyState extends State<LoginViewBody> {
           final token = authController.apiResponseData['token'] as String;
           await userController.saveUserData(id, token);
 
-          if(userType == 'customer') {
-
+          if (userType == 'customer') {
             sharedPreferences!.setString('userType', 'customer');
             Get.offAll(() => HomeView());
           } else {
             sharedPreferences!.setString('userType', 'producer');
             Get.offAll(() => HomeStoreView());
           }
-         
         } catch (e) {
           print("Error saving user data: $e");
         }

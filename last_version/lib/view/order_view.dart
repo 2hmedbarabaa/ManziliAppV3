@@ -196,8 +196,8 @@ class _OrderViewState extends State<OrderView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.white,
-     
+      appBar: AppBar(
+        backgroundColor: Colors.white,
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -310,6 +310,20 @@ class OrderCard extends StatelessWidget {
     this.onDelivered,
   });
 
+  Future<bool> _canChangeToDelivered(int orderId) async {
+    final url =
+        'http://man.runasp.net/api/Orders/IsCanChnageTodeliveredStatus?orderId=$orderId';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) == true;
+      }
+    } catch (e) {
+      debugPrint('Error checking delivery status: $e');
+    }
+    return false;
+  }
+
   String _formatDate(String date) {
     final parsedDate = DateTime.parse(date);
     return '${parsedDate.year}/${parsedDate.month}/${parsedDate.day}';
@@ -376,12 +390,23 @@ class OrderCard extends StatelessWidget {
                 style: TextStyle(fontSize: 16, color: Colors.black),
               ),
               const SizedBox(height: 8),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: onDelivered,
-                  child: const Text('تم التوصيل'),
-                ),
+              FutureBuilder<bool>(
+                future: _canChangeToDelivered(order.id),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  final canDeliver = snapshot.data ?? false;
+                  return SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: canDeliver ? onDelivered : null,
+                      child: const Text('تم التوصيل'),
+                    ),
+                  );
+                },
               ),
             ],
           ],
