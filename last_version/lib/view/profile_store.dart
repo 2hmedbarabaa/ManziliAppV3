@@ -28,9 +28,11 @@ class StoreProvider with ChangeNotifier {
     return true;
   }
 
-  Future<void> fetchStoreProfile({int storeId = 1}) async {
+  Future<void> fetchStoreProfile() async {
+
+     final userId = Get.find<UserController>().userId.value;
     final url = Uri.parse(
-        'http://man.runasp.net/api/Store/GetProfileStore?storeId=$storeId');
+        'http://man.runasp.net/api/Store/GetProfileStore?storeId=$userId');
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);

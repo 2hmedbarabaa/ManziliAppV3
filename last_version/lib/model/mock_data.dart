@@ -1,3 +1,7 @@
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:manziliapp/controller/user_controller.dart';
+
 import 'order.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -5,7 +9,8 @@ import '../model/order.dart';
 
 class MockData {
   static Future<List<Order>> getNewOrders() async {
-    final url = Uri.parse('http://man.runasp.net/api/Store/GetStoreOrdersInNewStatus?storeId=1');
+     final userId = Get.find<UserController>().userId.value;
+    final url = Uri.parse('http://man.runasp.net/api/Store/GetStoreOrdersInNewStatus?storeId=$userId');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -46,7 +51,8 @@ class MockData {
   }
 
   static Future<List<Order>> getCurrentOrders() async {
-    final url = Uri.parse('http://man.runasp.net/api/Store/GetStoreOrdersInWorkStatus?storeId=1');
+     final userId = Get.find<UserController>().userId.value;
+    final url = Uri.parse('http://man.runasp.net/api/Store/GetStoreOrdersInWorkStatus?storeId=$userId');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -81,7 +87,8 @@ class MockData {
   }
 
   static Future<List<Order>> getPreviousOrders() async {
-    final url = Uri.parse('http://man.runasp.net/api/Store/GetStoreOrdersInPastStatus?storeId=1');
+     final userId = Get.find<UserController>().userId.value;
+    final url = Uri.parse('http://man.runasp.net/api/Store/GetStoreOrdersInPastStatus?storeId=4');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {

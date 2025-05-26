@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:manziliapp/controller/user_controller.dart';
 import 'package:manziliapp/view/add_product_screen.dart';
 
 class ProductSroreDashbordView extends StatefulWidget {
@@ -23,7 +26,8 @@ class _ProductSroreDashbordViewState extends State<ProductSroreDashbordView>
   }
 
   Future<void> fetchProducts() async {
-    final url = 'http://man.runasp.net/api/Product/GetStoreProducts?storeId=1';
+     final userId = Get.find<UserController>().userId.value;
+    final url = 'http://man.runasp.net/api/Product/GetStoreProducts?storeId=$userId';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {

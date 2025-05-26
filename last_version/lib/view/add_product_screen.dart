@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:manziliapp/controller/user_controller.dart';
 import 'package:manziliapp/model/category_store.dart';
 import 'package:manziliapp/widget/add_product/add_category_dialog.dart';
 import 'package:manziliapp/widget/add_product/image_picker_widget.dart';
@@ -67,7 +70,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   Future<void> _saveProduct() async {
     if (_formKey.currentState!.validate() && _selectedCategory != null) {
-      final url = Uri.parse('http://man.runasp.net/api/Product/Create?storeId=1');
+      final userId = Get.find<UserController>().userId.value;
+
+      final url =
+          Uri.parse('http://man.runasp.net/api/Product/Create?storeId=$userId');
       final request = http.MultipartRequest('POST', url);
 
       request.fields['Name'] = _nameController.text;
@@ -78,7 +84,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
       // Attach images if any (assuming _selectedImages contains file paths)
       for (var imagePath in _selectedImages) {
-        request.files.add(await http.MultipartFile.fromPath('formImages', imagePath));
+        request.files
+            .add(await http.MultipartFile.fromPath('formImages', imagePath));
       }
 
       try {
@@ -90,10 +97,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(body['message'] ?? 'تم حفظ المنتج بنجاح')),
           );
-           Navigator.of(context).pop();
+          Navigator.of(context).pop();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(body['message'] ?? 'حدث خطأ أثناء حفظ المنتج')),
+            SnackBar(
+                content: Text(body['message'] ?? 'حدث خطأ أثناء حفظ المنتج')),
           );
         }
       } catch (e) {
@@ -126,7 +134,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ),
           actions: [
             TextButton(
-              onPressed: () {_saveProduct;},
+              onPressed: () {
+                _saveProduct;
+              },
               child: const Text(
                 'إعادة تعيين',
                 style: TextStyle(color: Color(0xFF1548C7)),
@@ -269,13 +279,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     child: ElevatedButton(
                       onPressed: _saveProduct,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF1548C7), // Button background color
+                        backgroundColor:
+                            Color(0xFF1548C7), // Button background color
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24, vertical: 12), // Optional padding
                         textStyle: const TextStyle(fontSize: 18), // Text size
                         foregroundColor: Colors.white, // Make font color white
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6), // Reduced border radius
+                          borderRadius:
+                              BorderRadius.circular(6), // Reduced border radius
                         ),
                       ),
                       child: const Text('حفظ التغييرات'),
@@ -333,7 +345,10 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.selectedCategory?.name ?? (widget.categories.isNotEmpty ? widget.categories[0].name : ''), 
+                  widget.selectedCategory?.name ??
+                      (widget.categories.isNotEmpty
+                          ? widget.categories[0].name
+                          : ''),
                   style: TextStyle(
                     color: widget.selectedCategory == null
                         ? Colors.grey

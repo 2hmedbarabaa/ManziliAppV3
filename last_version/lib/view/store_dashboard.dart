@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:manziliapp/controller/user_controller.dart';
 import 'package:manziliapp/model/product_store.dart';
 import 'package:manziliapp/widget/store_dashbord/analytics_card.dart';
 import 'package:manziliapp/widget/store_dashbord/bottom_navigation.dart';
@@ -77,6 +80,7 @@ class _StoreDashboardState extends State<StoreDashboard> {
   }
 
   Future<void> _fetchAnalyticsData() async {
+     final userId = Get.find<UserController>().userId.value;
     const String apiUrl =
         'http://man.runasp.net/api/Store/GetAnalysisStore?storeId=1';
     try {
