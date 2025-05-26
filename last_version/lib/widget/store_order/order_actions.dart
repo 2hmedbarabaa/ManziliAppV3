@@ -40,7 +40,7 @@ class NewOrderActions implements IOrderActions {
               onPressed: onContactCustomer,
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.blue,
-                side: const BorderSide(color: Colors.blue),
+                side: const BorderSide(color: Color(0xFF1548C7)),
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               ),
               child: const Text('التواصل',
@@ -50,20 +50,20 @@ class NewOrderActions implements IOrderActions {
         ),
 
         // Show Details button
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: OutlinedButton(
-              onPressed: onDetails,
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.blue,
-                side: const BorderSide(color: Colors.blue),
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-              ),
-              child: const Text('التفاصيل', style: TextStyle(fontSize: 12)),
-            ),
-          ),
-        ),
+        // Expanded(
+        //   child: Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 4),
+        //     child: OutlinedButton(
+        //       onPressed: onDetails,
+        //       style: OutlinedButton.styleFrom(
+        //         foregroundColor: Colors.blue,
+        //         side: const BorderSide(color: Colors.blue),
+        //         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+        //       ),
+        //       child: const Text('التفاصيل', style: TextStyle(fontSize: 12)),
+        //     ),
+        //   ),
+        // ),
 
         // Accept Order button (green)
         Expanded(
@@ -117,7 +117,7 @@ class NewOrderActions implements IOrderActions {
                   style: const TextStyle(fontSize: 12)),
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.black,
-                side: const BorderSide(color: Colors.blue),
+                side: const BorderSide(color: Color(0xFF1548C7)),
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               ),
             ),
@@ -156,8 +156,8 @@ class InProgressOrderActions implements IOrderActions {
               child: OutlinedButton(
                 onPressed: onContactCustomer,
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.blue,
-                  side: const BorderSide(color: Colors.blue),
+                  foregroundColor: Color(0xFF1548C7),
+                  side: const BorderSide(color: Color(0xFF1548C7)),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
                 ),
@@ -173,7 +173,7 @@ class InProgressOrderActions implements IOrderActions {
             child: ElevatedButton(
               onPressed: statusChanged ? null : onToShipping,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.lightGreen,
+                backgroundColor: Colors.green,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               ),
@@ -188,8 +188,8 @@ class InProgressOrderActions implements IOrderActions {
             child: OutlinedButton(
               onPressed: onDetails, // Always clickable if provided
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.blue,
-                side: const BorderSide(color: Colors.blue),
+                foregroundColor: Color(0xFF1548C7),
+                side: const BorderSide(color: Color(0xFF1548C7)),
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               ),
               child: const Text('عرض التفاصيل', style: TextStyle(fontSize: 12)),
@@ -225,8 +225,8 @@ class CompletedOrderActions implements IOrderActions {
               child: OutlinedButton(
                 onPressed: onContactCustomer,
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.blue,
-                  side: const BorderSide(color: Colors.blue),
+                  foregroundColor: Color(0xFF1548C7),
+                  side: const BorderSide(color: Color(0xFF1548C7)),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
                 ),
@@ -242,8 +242,8 @@ class CompletedOrderActions implements IOrderActions {
               child: OutlinedButton(
                 onPressed: onDetails,
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.blue,
-                  side: const BorderSide(color: Colors.blue),
+                  foregroundColor: Color(0xFF1548C7),
+                  side: const BorderSide(color: Color(0xFF1548C7)),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
                 ),

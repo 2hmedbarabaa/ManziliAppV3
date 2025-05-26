@@ -46,7 +46,9 @@ class _OrdersScreenState extends State<StoreOrdersView>
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(title: const Text('الطلبات')),
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text('الطلبات')),
         body: Column(
           children: [
             Container(
@@ -59,7 +61,7 @@ class _OrdersScreenState extends State<StoreOrdersView>
               child: TabBar(
                 controller: _tabController,
                 indicator: BoxDecoration(
-                  color: Colors.blue,
+                  color: Color(0xFF1548C7),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 labelColor: Colors.white,
@@ -110,7 +112,7 @@ class _OrdersScreenState extends State<StoreOrdersView>
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
-                        return Center(child:Text('لا توجد بيانات'));
+                        return Center(child: Text('لا توجد بيانات'));
                       } else if (snapshot.hasData) {
                         return _buildOrderList(snapshot.data!);
                       } else {
@@ -133,16 +135,19 @@ class _OrdersScreenState extends State<StoreOrdersView>
       itemCount: orders.length,
       itemBuilder: (context, index) {
         final order = orders[index];
-        final statusChanged = _shippingStatusChanged.contains(order.id) || order.status == OrderStatus.ongoing;
+        final statusChanged = _shippingStatusChanged.contains(order.id) ||
+            order.status == OrderStatus.ongoing;
         return OrderCard(
           order: order,
           onAccept: () async {
             final orderId = orders[index].id;
-            final url = Uri.parse('http://man.runasp.net/api/Orders/UpdateOrderStatus?orderId=$orderId&status=2');
+            final url = Uri.parse(
+                'http://man.runasp.net/api/Orders/UpdateOrderStatus?orderId=$orderId&status=2');
             showDialog(
               context: context,
               barrierDismissible: false,
-              builder: (ctx) => const Center(child: CircularProgressIndicator()),
+              builder: (ctx) =>
+                  const Center(child: CircularProgressIndicator()),
             );
             try {
               final response = await http.put(url);
@@ -179,13 +184,15 @@ class _OrdersScreenState extends State<StoreOrdersView>
               MaterialPageRoute(
                 builder: (ctx) => ConfirmCancelOrderScreen(
                   customerName: order.customerName,
-                  storeName: order.storeName ?? '', // Replace with actual store name if available in order
+                  storeName: order.storeName ??
+                      '', // Replace with actual store name if available in order
                   onConfirm: () async {
                     Navigator.of(ctx).pop(); // Close confirmation screen
                     showDialog(
                       context: context,
                       barrierDismissible: false,
-                      builder: (ctx) => const Center(child: CircularProgressIndicator()),
+                      builder: (ctx) =>
+                          const Center(child: CircularProgressIndicator()),
                     );
                     final success = await _deleteOrder(orders[index].id);
                     Navigator.of(context).pop(); // remove loading dialog
@@ -194,7 +201,9 @@ class _OrdersScreenState extends State<StoreOrdersView>
                         orders.removeAt(index);
                       });
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('تم إلغاء الطلب ${orders[index].id}')),
+                        SnackBar(
+                            content:
+                                Text('تم إلغاء الطلب ${orders[index].id}')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -225,10 +234,11 @@ class _OrdersScreenState extends State<StoreOrdersView>
             );
           },
           onContactCustomer: () async {
-            final String phone =  '+967${orders[index].customerPhone}';
+            final String phone = '+967${orders[index].customerPhone}';
             final whatsappUrl = Uri.parse('https://wa.me/$phone');
             if (await canLaunchUrl(whatsappUrl)) {
-              await launchUrl(whatsappUrl, mode: LaunchMode.externalApplication);
+              await launchUrl(whatsappUrl,
+                  mode: LaunchMode.externalApplication);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -241,27 +251,33 @@ class _OrdersScreenState extends State<StoreOrdersView>
               ? null
               : () async {
                   final orderId = order.id;
-                  final url = Uri.parse('http://man.runasp.net/api/Orders/UpdateOrderStatus?orderId=$orderId&status=3');
+                  final url = Uri.parse(
+                      'http://man.runasp.net/api/Orders/UpdateOrderStatus?orderId=$orderId&status=3');
                   showDialog(
                     context: context,
                     barrierDismissible: false,
-                    builder: (ctx) => const Center(child: CircularProgressIndicator()),
+                    builder: (ctx) =>
+                        const Center(child: CircularProgressIndicator()),
                   );
                   try {
                     final response = await http.put(url);
                     Navigator.of(context).pop(); // remove loading dialog
-                    if (response.statusCode == 200 && response.body.contains('"isSuccess": true')) {
+                    if (response.statusCode == 200 &&
+                        response.body.contains('"isSuccess": true')) {
                       setState(() {
                         _shippingStatusChanged.add(orderId);
                         // Optionally update the order's status in the list if you want immediate UI feedback
-                        orders[index] = order.copyWith(status: OrderStatus.ongoing);
+                        orders[index] =
+                            order.copyWith(status: OrderStatus.ongoing);
                       });
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('تم نقل الطلب $orderId الى الشحن')),
+                        SnackBar(
+                            content: Text('تم نقل الطلب $orderId الى الشحن')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('فشل في نقل الطلب الى الشحن')),
+                        const SnackBar(
+                            content: Text('فشل في نقل الطلب الى الشحن')),
                       );
                     }
                   } catch (e) {
