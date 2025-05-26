@@ -3,22 +3,19 @@ import 'package:flutter/material.dart';
 
 import 'CircleButton.dart';
 
-
-
-
 // Component for Image Carousel
 class ImageCarousel extends StatelessWidget {
   final List<String> images;
   final int currentIndex;
   final Function(int) onPageChanged;
-  
+
   const ImageCarousel({
     super.key,
     required this.images,
     required this.currentIndex,
     required this.onPageChanged,
   });
-  
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -28,7 +25,7 @@ class ImageCarousel extends StatelessWidget {
           height: 300,
           color: const Color(0xFFffffff),
         ),
-        
+
         // Image carousel
         CarouselSlider(
           options: CarouselOptions(
@@ -49,7 +46,7 @@ class ImageCarousel extends StatelessWidget {
                     color: Colors.black,
                   ),
                   child: Image.network(
-                    'http://man.runasp.net/$imageUrl',
+                    imageUrl,
                     fit: BoxFit.cover,
                   ),
                 );
@@ -57,9 +54,7 @@ class ImageCarousel extends StatelessWidget {
             );
           }).toList(),
         ),
-        
-        
-        
+
         // Back button
         Positioned(
           left: 20,

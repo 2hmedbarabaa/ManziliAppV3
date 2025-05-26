@@ -34,6 +34,12 @@ class ProductDetailController extends GetxController {
         final jsonResponse = json.decode(response.body);
         if (jsonResponse["isSuccess"] == true) {
           final productData = jsonResponse["data"];
+          // Prepend base URL to images and storeImage
+          productData["images"] = (productData["images"] as List)
+              .map((image) => "http://man.runasp.net$image")
+              .toList();
+          productData["storeImage"] =
+              "http://man.runasp.net${productData["storeImage"]}";
           product.value = ProductData.fromJson(productData);
         } else {
           errorMessage.value = jsonResponse["message"];

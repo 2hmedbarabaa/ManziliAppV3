@@ -137,11 +137,10 @@ class _ProductDetailViewState extends State<ProductDetailView> {
         return Column(
           children: [
             ImageCarousel(
-              images: product.images!.map((imageUrl) {
-                return imageUrl.startsWith('http')
-                    ? imageUrl
-                    : 'lib/assets/image/ad1.jpeg';
-              }).toList(),
+              images: product.images!
+                  .where((imageUrl) =>
+                      imageUrl.startsWith('http://man.runasp.net'))
+                  .toList(),
               currentIndex: 0,
               onPageChanged: (_) {},
             ),
@@ -173,81 +172,84 @@ class _ProductDetailViewState extends State<ProductDetailView> {
 
             // Add/Remove Cart Button & Price
             Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 90,
-              decoration: const BoxDecoration(
-                color: Color(0xFF1548C7), // Blue background
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: 90,
+                decoration: const BoxDecoration(
+                  color: Color(0xFF1548C7), // Blue background
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
                 ),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Price
-                 Directionality(
-                    textDirection: TextDirection.rtl, // Force RTL layout
-                    child: RichText(
-                      text: TextSpan(
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Price
+                    Directionality(
+                      textDirection: TextDirection.rtl, // Force RTL layout
+                      child: RichText(
+                        text: TextSpan(
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: (product.price * _quantity)
+                                  .toStringAsFixed(2),
+                            ),
+                            const TextSpan(
+                              text: ' ريال',
+                            ),
+                          ],
                         ),
-                        children: [
-                          TextSpan(
-                            text: (product.price * _quantity).toStringAsFixed(2),
-                          ),
-                          const TextSpan(
-                            text: ' ريال',
-                          ),
-                        ],
                       ),
                     ),
-                  ),
 
-                  // Add/Remove Cart Button or Loading Spinner
-                  _isLoading
-                      ? const SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.5,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
-                        )
-                      : ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: _isInCart ? Colors.red : Color(0xFF1548C7),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                    // Add/Remove Cart Button or Loading Spinner
+                    _isLoading
+                        ? const SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.5,
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
+                          )
+                        : ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor:
+                                  _isInCart ? Colors.red : Color(0xFF1548C7),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                            ),
+                            onPressed: _toggleCart,
+                            icon: Icon(
+                              _isInCart
+                                  ? Icons.remove_circle_outline
+                                  : Icons.shopping_cart_outlined,
+                              size: 20,
+                            ),
+                            label: Text(
+                              _isInCart ? 'إزالة من السلة' : 'إضافة للسلة',
+                              style: const TextStyle(fontSize: 14),
                             ),
                           ),
-                          onPressed: _toggleCart,
-                          icon: Icon(
-                            _isInCart
-                                ? Icons.remove_circle_outline
-                                : Icons.shopping_cart_outlined,
-                            size: 20,
-                          ),
-                          label: Text(
-                            _isInCart ? 'إزالة من السلة' : 'إضافة للسلة',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-
           ],
         );
       }),
@@ -276,7 +278,7 @@ class ProductDetailsViewBody extends StatelessWidget {
       children: [
         // عرض تقييم ومعلومات المتجر
         RatingAndStoreInfo(
-           rating: product.rating.round(),
+          rating: product.rating.round(),
           storeName: product.storeName,
           storeImage: storeImage,
         ),
