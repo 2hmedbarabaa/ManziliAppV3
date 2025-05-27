@@ -43,8 +43,7 @@ class NewOrderActions implements IOrderActions {
                 side: const BorderSide(color: Color(0xFF1548C7)),
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               ),
-              child: const Text('التواصل',
-                  style: TextStyle(fontSize: 12)),
+              child: const Text('التواصل', style: TextStyle(fontSize: 12)),
             ),
           ),
         ),
@@ -76,7 +75,8 @@ class NewOrderActions implements IOrderActions {
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               ),
-              child: const Text('تغيير حالة ', style: TextStyle(fontSize: 12), textAlign: TextAlign.center),
+              child: const Text('تغيير حالة ',
+                  style: TextStyle(fontSize: 12), textAlign: TextAlign.center),
             ),
           ),
         ),
@@ -92,7 +92,8 @@ class NewOrderActions implements IOrderActions {
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               ),
-              child: const Text('رفض الطلب', style: TextStyle(fontSize: 12), textAlign: TextAlign.center),
+              child: const Text('رفض الطلب',
+                  style: TextStyle(fontSize: 12), textAlign: TextAlign.center),
             ),
           ),
         ),
@@ -107,14 +108,14 @@ class NewOrderActions implements IOrderActions {
                       // Open PDF in browser
                       final url = Uri.parse(documentUrl!);
                       if (await canLaunchUrl(url)) {
-                        await launchUrl(url, mode: LaunchMode.externalApplication);
+                        await launchUrl(url,
+                            mode: LaunchMode.externalApplication);
                       }
                     }
                   : null,
               icon: const Icon(Icons.insert_drive_file,
                   color: Colors.red, size: 16),
-              label: Text( 'PDF',
-                  style: const TextStyle(fontSize: 12)),
+              label: Text('PDF', style: const TextStyle(fontSize: 12)),
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.black,
                 side: const BorderSide(color: Color(0xFF1548C7)),
@@ -177,25 +178,30 @@ class InProgressOrderActions implements IOrderActions {
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               ),
-              child: Text(statusChanged ? 'تم تغيير الحالة الى في الطريق' : 'الى الطريق', style: const TextStyle(fontSize: 12), textAlign: TextAlign.center),
+              child: Text(
+                  statusChanged
+                      ? 'تم تغيير الحالة الى في الطريق'
+                      : 'الى الطريق',
+                  style: const TextStyle(fontSize: 12),
+                  textAlign: TextAlign.center),
             ),
           ),
         ),
         // Show Details button (blue outlined)
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: OutlinedButton(
-              onPressed: onDetails, // Always clickable if provided
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Color(0xFF1548C7),
-                side: const BorderSide(color: Color(0xFF1548C7)),
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-              ),
-              child: const Text('عرض التفاصيل', style: TextStyle(fontSize: 12)),
-            ),
-          ),
-        ),
+        // Expanded(
+        //   child: Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 4),
+        //     child: OutlinedButton(
+        //       onPressed: onDetails, // Always clickable if provided
+        //       style: OutlinedButton.styleFrom(
+        //         foregroundColor: Color(0xFF1548C7),
+        //         side: const BorderSide(color: Color(0xFF1548C7)),
+        //         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+        //       ),
+        //       child: const Text('عرض التفاصيل', style: TextStyle(fontSize: 12)),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
@@ -235,23 +241,23 @@ class CompletedOrderActions implements IOrderActions {
               ),
             ),
           ),
-        if (onDetails != null)
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: OutlinedButton(
-                onPressed: onDetails,
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: Color(0xFF1548C7),
-                  side: const BorderSide(color: Color(0xFF1548C7)),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-                ),
-                child:
-                    const Text('عرض التفاصيل', style: TextStyle(fontSize: 12)),
-              ),
-            ),
-          ),
+        // if (onDetails != null)
+        //   Expanded(
+        //     child: Padding(
+        //       padding: const EdgeInsets.symmetric(horizontal: 4),
+        //       child: OutlinedButton(
+        //         onPressed: onDetails,
+        //         style: OutlinedButton.styleFrom(
+        //           foregroundColor: Color(0xFF1548C7),
+        //           side: const BorderSide(color: Color(0xFF1548C7)),
+        //           padding:
+        //               const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+        //         ),
+        //         child:
+        //             const Text('عرض التفاصيل', style: TextStyle(fontSize: 12)),
+        //       ),
+        //     ),
+        //   ),
       ],
     );
   }
