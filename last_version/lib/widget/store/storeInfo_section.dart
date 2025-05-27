@@ -23,15 +23,16 @@ class StoreInfoSection extends StatelessWidget {
           child: Row(
             children: [
               // Favorite button
-              IconButton(
-                icon: const Icon(Icons.favorite_border,
-                    color: Color(0xFF1548C7), size: 35),
-                onPressed: () {},
-              ),
+              // IconButton(
+              //   icon: const Icon(Icons.favorite_border,
+              //       color: Color(0xFF1548C7), size: 35),
+              //   onPressed: () {},
+              // ),
               // Rating with border only and left margin, smaller font and star
               Container(
                 margin: const EdgeInsets.only(left: 15),
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                   borderRadius: BorderRadius.circular(16),
@@ -68,13 +69,13 @@ class StoreInfoSection extends StatelessWidget {
                           style: const TextStyle(
                               fontWeight: FontWeight.w500, fontSize: 19),
                           textAlign: TextAlign.center,
-                          
                         ),
                         const SizedBox(width: 4),
                         const Icon(Icons.storefront,
                             color: Color(0xFF1548C7),
                             size: 31), // الأيقونة أولاً
-                        const SizedBox(width: 6), // مسافة صغيرة بين الأيقونة والنص
+                        const SizedBox(
+                            width: 6), // مسافة صغيرة بين الأيقونة والنص
                       ],
                     ),
                   ),
@@ -97,7 +98,8 @@ class StoreInfoSection extends StatelessWidget {
                   color: Color(0xFFECF1F6),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), // smaller padding
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 12, vertical: 6), // smaller padding
                 child: Text(
                   category,
                   style: const TextStyle(

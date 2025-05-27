@@ -11,7 +11,8 @@ class StoreTabs extends StatelessWidget {
     super.key,
     required this.selectedTabIndex,
     required this.onTabSelected,
-    required this.status, required this.addrees,
+    required this.status,
+    required this.addrees,
   });
 
   @override
@@ -35,11 +36,12 @@ class StoreTabs extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Color(0xFF20D851),
+                        color:
+                            status == 'Open' ? Color(0xFF20D851) : Colors.red,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        status,
+                        status == 'Open' ? 'مفتوح' : 'مغلق',
                         style: TextStyle(
                             color:
                                 status == 'مفتوح' ? Colors.white : Colors.white,
