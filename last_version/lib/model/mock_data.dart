@@ -87,36 +87,38 @@ class MockData {
   }
 
   static Future<List<Order>> getPreviousOrders() async {
-     final userId = Get.find<UserController>().userId.value;
-    final url = Uri.parse('http://man.runasp.net/api/Store/GetStoreOrdersInPastStatus?storeId=4');
+    final userId = Get.find<UserController>().userId.value;
+    final url = Uri.parse('http://man.runasp.net/api/Store/GetStoreOrdersInPastStatus?storeId=$userId');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-
-      final ordersJson = data is List ? data : [data];
-
-      return ordersJson.map<Order>((jsonOrder) {
-        return Order(
-          customerPhone: jsonOrder['customerPhoneNumber'],
-          id: jsonOrder['id'].toString(),
-          customerName: jsonOrder['customerName'] ?? '',
-          customerAvatar: '', // No avatar in API
-          customerEmail: jsonOrder['customerEmail'] ?? '',
-          customerAddress: jsonOrder['customerAddress'] ?? '',
-          status: OrderStatus.completed, // or map from jsonOrder['status'] if needed
-          date: DateTime.tryParse(jsonOrder['createdAt'] ?? '') ?? DateTime.now(),
-          notes: jsonOrder['note'] ?? '',
-          items: (jsonOrder['orderProducts'] as List)
-              .map((p) => OrderItem(
-                    id: p['id']?.toString() ?? '',
-                    name: p['name'] ?? '',
-                    price: (p['price'] as num?)?.toDouble() ?? 0.0,
-                    quantity: p['count'] ?? 0,
-                  ))
-              .toList(),
-        );
-      }).toList();
+      if (data['isSuccess'] == true && data['data'] is List) {
+        final ordersJson = data['data'] as List;
+        return ordersJson.map<Order>((jsonOrder) {
+          return Order(
+            customerPhone: jsonOrder['customerPhoneNumber'],
+            id: jsonOrder['id'].toString(),
+            customerName: jsonOrder['customerName'] ?? '',
+            customerAvatar: '', // No avatar in API
+            customerEmail: '', // Not provided in API
+            customerAddress: jsonOrder['customerAddress'] ?? '',
+            status: OrderStatus.completed, // or map from jsonOrder['status'] if needed
+            date: DateTime.tryParse(jsonOrder['createdAt'] ?? '') ?? DateTime.now(),
+            notes: jsonOrder['note'] ?? '',
+            items: (jsonOrder['orderProducts'] as List)
+                .map((p) => OrderItem(
+                      id: p['id']?.toString() ?? '',
+                      name: p['name'] ?? '',
+                      price: (p['price'] as num?)?.toDouble() ?? 0.0,
+                      quantity: p['count'] ?? 0,
+                    ))
+                .toList(),
+          );
+        }).toList();
+      } else {
+        return [];
+      }
     } else {
       throw Exception('Failed to load previous orders');
     }
