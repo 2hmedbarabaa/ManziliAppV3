@@ -17,7 +17,8 @@ class StoreListSection extends StatefulWidget {
   final String? filter;
   final String? searchQuery;
 
-  const StoreListSection({super.key, this.category, this.filter, this.searchQuery});
+  const StoreListSection(
+      {super.key, this.category, this.filter, this.searchQuery});
 
   @override
   _StoreListSectionState createState() => _StoreListSectionState();
@@ -87,7 +88,7 @@ class _StoreListSectionState extends State<StoreListSection> {
     } else if (status.toLowerCase() == "closed") {
       return {"text": "مغلق", "color": AppColors.closedStatus};
     }
-    return {"text": status, "color": Colors.grey};
+    return {"text": "مغلق", "color": Colors.grey};
   }
 
   @override
@@ -107,7 +108,9 @@ class _StoreListSectionState extends State<StoreListSection> {
           List<StoreModle> stores = snapshot.data!;
           if (widget.searchQuery != null && widget.searchQuery!.isNotEmpty) {
             final query = widget.searchQuery!.toLowerCase();
-            stores = stores.where((store) => store.UserName.toLowerCase().contains(query)).toList();
+            stores = stores
+                .where((store) => store.UserName.toLowerCase().contains(query))
+                .toList();
           }
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
@@ -133,8 +136,8 @@ class _StoreListSectionState extends State<StoreListSection> {
           );
         }
       },
-      );
-    }
+    );
+  }
 }
 
 class StoreListItem extends StatefulWidget {
