@@ -33,6 +33,8 @@ class ProducerRegistrationForm extends StatefulWidget {
 
 class _ProducerRegistrationFormState extends State<ProducerRegistrationForm> {
   final TextEditingController usernameController = TextEditingController();
+  final TextEditingController deliveryFeesController =
+      TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
@@ -72,6 +74,7 @@ class _ProducerRegistrationFormState extends State<ProducerRegistrationForm> {
 
     try {
       final storeData = StoreCreateModel(
+        deliveryFees: int.parse(deliveryFeesController.text),
         userName: usernameController.text,
         phonenumber: phoneController.text,
         email: emailController.text,

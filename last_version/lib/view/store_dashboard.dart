@@ -20,16 +20,16 @@ class _StoreDashboardState extends State<StoreDashboard> {
       DraggableScrollableController();
   bool isFabVisible = false;
   bool isLoading = true; // Add a loading state
-  final List<ProductStore> products = [
-    ProductStore(
-      id: '1',
-      name: 'برجر لحم',
-      price: 2000,
-      rating: 4.6,
-      imageUrl: 'assets/images/burger.jpg',
-      isFavorite: true,
-    ),
-  ];
+  // final List<ProductStore> products = [
+  //   ProductStore(
+  //     id: '1',
+  //     name: 'برجر لحم',
+  //     price: 2000,
+  //     rating: 4.6,
+  //     imageUrl: 'assets/images/burger.jpg',
+  //     isFavorite: true,
+  //   ),
+  // ];
 
   String selectedMonth = 'مارس';
   final List<String> months = [
@@ -80,7 +80,7 @@ class _StoreDashboardState extends State<StoreDashboard> {
   }
 
   Future<void> _fetchAnalyticsData() async {
-     final userId = Get.find<UserController>().userId.value;
+    final userId = Get.find<UserController>().userId.value;
     const String apiUrl =
         'http://man.runasp.net/api/Store/GetAnalysisStore?storeId=1';
     try {
@@ -131,7 +131,8 @@ class _StoreDashboardState extends State<StoreDashboard> {
 
   Future<void> _fetchMonthlyProfits() async {
     final int monthId = monthlyId[selectedMonth] ?? 1;
-    final String apiUrl = 'http://man.runasp.net/api/Store/GetTotalSales?storeId=1&month=$monthId';
+    final String apiUrl =
+        'http://man.runasp.net/api/Store/GetTotalSales?storeId=1&month=$monthId';
     try {
       final response = await http.get(Uri.parse(apiUrl));
       if (response.statusCode == 200) {
@@ -197,7 +198,7 @@ class _StoreDashboardState extends State<StoreDashboard> {
                     ),
                   ),
                   // Simple draggable sheet for products
-                  _buildProductsSheet(),
+                  // _buildProductsSheet(),
                   if (isFabVisible)
                     Positioned(
                       bottom: 50 + (100 * _sheetController.size),
@@ -218,7 +219,6 @@ class _StoreDashboardState extends State<StoreDashboard> {
                         ),
                       ),
                     ),
-                 
                 ],
               ),
       ),
@@ -536,96 +536,96 @@ class _StoreDashboardState extends State<StoreDashboard> {
     );
   }
 
-  Widget _buildProductsSheet() {
-    return DraggableScrollableSheet(
-      controller: _sheetController,
-      initialChildSize: 0.2, // رفع البداية للأعلى
-      minChildSize: 0.15,
-      maxChildSize: 0.9,
-      snap: true,
-      snapSizes: const [0.4, 0.7, 0.9],
-      builder: (context, scrollController) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(25),
-              topRight: Radius.circular(25),
-            ),
-          ),
-          child: ListView(
-            controller: scrollController,
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.only(top: 8), // تقليل التباعد العلوية
-            children: [
-              Column(
-                children: [
-                  // أيقونة السحب
-                  Container(
-                    margin: const EdgeInsets.only(
-                        top: 4, bottom: 8), // تقليل المسافة العلوية
-                    width: 60,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[400],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
+  // Widget _buildProductsSheet() {
+  //   return DraggableScrollableSheet(
+  //     controller: _sheetController,
+  //     initialChildSize: 0.2, // رفع البداية للأعلى
+  //     minChildSize: 0.15,
+  //     maxChildSize: 0.9,
+  //     snap: true,
+  //     snapSizes: const [0.4, 0.7, 0.9],
+  //     builder: (context, scrollController) {
+  //       return Container(
+  //         decoration: BoxDecoration(
+  //           color: Colors.white,
+  //           borderRadius: const BorderRadius.only(
+  //             topLeft: Radius.circular(25),
+  //             topRight: Radius.circular(25),
+  //           ),
+  //         ),
+  //         child: ListView(
+  //           controller: scrollController,
+  //           physics: const BouncingScrollPhysics(),
+  //           padding: const EdgeInsets.only(top: 8), // تقليل التباعد العلوية
+  //           children: [
+  //             Column(
+  //               children: [
+  //                 // أيقونة السحب
+  //                 // Container(
+  //                 //   margin: const EdgeInsets.only(
+  //                 //       top: 4, bottom: 8), // تقليل المسافة العلوية
+  //                 //   width: 60,
+  //                 //   height: 5,
+  //                 //   decoration: BoxDecoration(
+  //                 //     color: Colors.grey[400],
+  //                 //     borderRadius: BorderRadius.circular(20),
+  //                 //   ),
+  //                 // ),
 
-                  // العنوان وعدد المنتجات
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'منتجاتي',
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          '${products.length} منتجات',
-                          style: TextStyle(
-                            fontSize: 22, // تقليل الحجم قليلاً
-                            color: Colors.grey[600],
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+  //                 // // العنوان وعدد المنتجات
+  //                 // Padding(
+  //                 //   padding: const EdgeInsets.symmetric(
+  //                 //       horizontal: 16.0, vertical: 8),
+  //                 //   child: Row(
+  //                 //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 //     children: [
+  //                 //       const Text(
+  //                 //         'منتجاتي',
+  //                 //         style: TextStyle(
+  //                 //           fontSize: 25,
+  //                 //           fontWeight: FontWeight.bold,
+  //                 //         ),
+  //                 //       ),
+  //                 //       Text(
+  //                 //         '${products.length} منتجات',
+  //                 //         style: TextStyle(
+  //                 //           fontSize: 22, // تقليل الحجم قليلاً
+  //                 //           color: Colors.grey[600],
+  //                 //           fontWeight: FontWeight.bold,
+  //                 //         ),
+  //                 //       ),
+  //                 //     ],
+  //                 //   ),
+  //                 // ),
 
-                  const SizedBox(height: 8), // تقليل المسافة قبل عرض المنتجات
+  //                 // const SizedBox(height: 8), // تقليل المسافة قبل عرض المنتجات
 
-                  // عرض المنتجات
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(16),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.75,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                    ),
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-                      return _buildProductCard(product);
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  //                 // // عرض المنتجات
+  //                 // GridView.builder(
+  //                 //   shrinkWrap: true,
+  //                 //   physics: const NeverScrollableScrollPhysics(),
+  //                 //   padding: const EdgeInsets.all(16),
+  //                 //   gridDelegate:
+  //                 //       const SliverGridDelegateWithFixedCrossAxisCount(
+  //                 //     crossAxisCount: 2,
+  //                 //     childAspectRatio: 0.75,
+  //                 //     crossAxisSpacing: 16,
+  //                 //     mainAxisSpacing: 16,
+  //                 //   ),
+  //                 //   itemCount: products.length,
+  //                 //   itemBuilder: (context, index) {
+  //                 //     final product = products[index];
+  //                 //     return _buildProductCard(product);
+  //                 //   },
+  //                 // ),
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   Widget _buildProductCard(ProductStore product) {
     return Container(

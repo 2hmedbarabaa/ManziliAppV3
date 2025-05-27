@@ -7,17 +7,16 @@ class StoreCreateModel {
   String phonenumber;
   String address;
   String? bookTime;
-
   File? image;
-
   String password;
   String confirmPassword;
-
   String socileMediaAcount;
   String bankAccount;
+  int deliveryFees;
 
   StoreCreateModel({
     this.bookTime,
+    required this.deliveryFees, 
     required this.socileMediaAcount,
     required this.email,
     required this.phonenumber,
@@ -32,6 +31,7 @@ class StoreCreateModel {
 
   Map<String, dynamic> toMap() {
     return {
+      "DeliveryFees": deliveryFees,
       "BookTime": bookTime,
       "UserName": userName,
       "Email": email,
