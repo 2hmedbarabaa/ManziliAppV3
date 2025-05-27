@@ -10,15 +10,16 @@ class BusinessInfoPage extends StatelessWidget {
   final TextEditingController socileMediaAcountController;
   final TextEditingController descriptionController;
   final TextEditingController bookTime;
-
+  final TextEditingController deliveryFees;
 
   const BusinessInfoPage({
     super.key,
     required this.pageController,
     required this.bankAccountController,
     required this.socileMediaAcountController,
-    required this.descriptionController, 
+    required this.descriptionController,
     required this.bookTime,
+    required this.deliveryFees,
   });
 
   @override
@@ -45,7 +46,6 @@ class BusinessInfoPage extends StatelessWidget {
             ),
           ),
         ),
-       
         const SizedBox(height: 10),
         CustomeTextFiled(
           controller: descriptionController,
@@ -63,8 +63,13 @@ class BusinessInfoPage extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         CustomeTextFiled(
-          controller: socileMediaAcountController,
+          controller: bookTime,
           hintText: 'وقت تسليم',
+        ),
+        const SizedBox(height: 10),
+        CustomeTextFiled(
+          controller: deliveryFees,
+          hintText: 'رسوم التوصيل',
         ),
         const SizedBox(height: 10),
         SizedBox(

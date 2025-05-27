@@ -56,7 +56,7 @@ class StoreData {
       address: json['address'],
       socileMediaAcount: json['socileMediaAcount'],
       rate: json['rate'].toDouble() ?? 0.0,
-      status: json['status'],
+      status: json['status']
     );
   }
 }
@@ -168,6 +168,7 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                 bookTime: storeData.bookTime,
               ),
               StoreContact(
+                banckAccount:  storeData.bankAccount,
                 socileMediaAcount: storeData.socileMediaAcount,
                 phoneNumberl: storeData.phoneNumber,
               ),

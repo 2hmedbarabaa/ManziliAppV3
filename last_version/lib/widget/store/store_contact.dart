@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 
 class StoreContact extends StatelessWidget {
   const StoreContact(
-      {super.key, required this.socileMediaAcount, required this.phoneNumberl});
+      {super.key,
+      required this.socileMediaAcount,
+      required this.phoneNumberl,
+      required this.banckAccount});
 
   final String socileMediaAcount;
   final String phoneNumberl;
+  final String banckAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,7 @@ class StoreContact extends StatelessWidget {
 
           // Social media
           const Text(
-            ':أو متابعتنا على',
+            'التواصل معنا عبر الاستقرام',
             style: TextStyle(
               color: Color(0xFF1548C7),
               fontWeight: FontWeight.bold,
@@ -46,8 +50,17 @@ class StoreContact extends StatelessWidget {
           ),
           const SizedBox(height: 12),
 
+          // Phone number 1
+          _buildContactItem(
+            icon: Icons.abc,
+            text: socileMediaAcount,
+            color: Color(0xFF1548C7),
+          ),
+
+          const SizedBox(height: 12),
+
           const Text(
-            ':أو متابعتنا على',
+            'حسابنا في العمقي البنكي',
             style: TextStyle(
               color: Color(0xFF1548C7),
               fontWeight: FontWeight.bold,
@@ -59,8 +72,8 @@ class StoreContact extends StatelessWidget {
 
           // Instagram
           _buildContactItem(
-            icon: Icons.camera_alt,
-            text: socileMediaAcount,
+            icon: Icons.account_balance,
+            text: banckAccount,
             color: Color(0xFF1548C7),
           ),
         ],

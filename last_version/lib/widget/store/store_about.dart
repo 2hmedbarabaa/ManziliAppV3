@@ -31,6 +31,17 @@ class StoreAbout extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
+          // Delivery time title
+          const Text(
+            ':وقت التوصيل',
+            style: TextStyle(
+              color: Color(0xFF1548C7),
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+            textAlign: TextAlign.right,
+          ),
+          const SizedBox(height: 8),
           // Delivery time
           Row(
             mainAxisAlignment: MainAxisAlignment.end,

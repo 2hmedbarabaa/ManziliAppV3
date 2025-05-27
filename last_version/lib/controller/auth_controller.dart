@@ -121,6 +121,7 @@ class AuthController extends GetxController {
 
       // Add form fields
       request.fields.addAll({
+        'DeliveryFees': storeData.deliveryFees.toString(),
         'BookTime' : storeData.bookTime ?? "1 - 2 hours",
         'UserName': storeData.userName,
         'Description': storeData.description,

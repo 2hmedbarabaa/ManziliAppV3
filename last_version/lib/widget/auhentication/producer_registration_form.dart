@@ -109,6 +109,7 @@ class _ProducerRegistrationFormState extends State<ProducerRegistrationForm> {
         SizedBox(
           height: 500,
           child: CustomPageView(
+            deliveryFees: deliveryFeesController,
             bookTime: bookTime,
             pageController: widget.pageController,
             usernameController: usernameController,
