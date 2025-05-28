@@ -12,11 +12,12 @@ class ProductsView extends StatefulWidget {
   const ProductsView({
     super.key,
     required this.categoryNames,
-    required this.storeid,
+    required this.storeid, required this.IsAllow,
   });
 
   final List<String> categoryNames;
   final int storeid;
+  final bool IsAllow;
 
   @override
   State<ProductsView> createState() => _ProductsViewState();
@@ -88,7 +89,7 @@ class _ProductsViewState extends State<ProductsView> {
     }
     return _productController.products.where((product) {
       return product.name.toLowerCase().contains(query) ||
-             product.description.toLowerCase().contains(query);
+          product.description.toLowerCase().contains(query);
     }).toList();
   }
 
@@ -214,8 +215,7 @@ class _ProductsViewState extends State<ProductsView> {
                     controller: _searchController,
                     textAlign: TextAlign.right,
                     decoration: const InputDecoration(
-                      hintText: 'بحث عن منتج...'
-                          ,
+                      hintText: 'بحث عن منتج...',
                       hintStyle: TextStyle(color: Colors.grey),
                       prefixIcon: Icon(Icons.search, color: Colors.grey),
                       border: InputBorder.none,
@@ -265,6 +265,7 @@ class _ProductsViewState extends State<ProductsView> {
                         ));
                   },
                   child: ProductCard(
+                    IsAllow: widget.IsAllow,
                     product: product,
                     subCategoryId: _productController.subCategories.isNotEmpty
                         ? _productController.subCategories.firstWhere(

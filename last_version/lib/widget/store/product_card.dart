@@ -11,12 +11,14 @@ class ProductCard extends StatefulWidget {
   final Product product;
   final int? subCategoryId;
   final int storeId;
+  final bool IsAllow;
 
   const ProductCard({
     super.key,
     required this.product,
     this.subCategoryId,
     required this.storeId,
+    required this.IsAllow,
   });
 
   @override
@@ -62,8 +64,14 @@ class _ProductCardState extends State<ProductCard> {
       final userId = Get.find<UserController>().userId.value;
       bool success = false;
 
+      if (widget.IsAllow == false) {
+        Get.snackbar('خظاء', 'لا يمكنك الطللب بسبب المتجر مقفل ');
+        return;
+      }
+
       if (userId == widget.storeId) {
         Get.snackbar('خطأ', 'لا يمكنك إضافة منتجاتك للسلة');
+        return;
       } else {
         if (wantToAdd) {
           // ----- ADD TO CART -----

@@ -185,6 +185,7 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
         );
       case 3: // Products (منتجاتنا)
         return ProductsView(
+          IsAllow: storeData.status == "Open" ? true : false,
           categoryNames: storeData.categoryNames,
           storeid: storeData.id,
         );
